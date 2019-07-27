@@ -1,0 +1,24 @@
+#!/bin/bash
+
+if [ -z "$1" ]; then
+	echo "Must pass a parameter with the repo you want to sync"
+	exit 1;
+fi;
+
+if [ ! -d $1 ]; then
+	echo "Path doesn't exist."
+	exit 1;
+fi;
+
+#cd $1
+echo "Running in $1";
+git="git -C $1"
+
+for remote in $( git -C $1 remote -v | grep "\(push\)" | cut -f2 | cut -d ' ' -f1 )
+do
+	echo " > Remote: $remote";
+	$git reset --hard HEAD
+	$git fetch $remote --tags
+	$git push $remote --all
+	$git push $remote --tags
+done

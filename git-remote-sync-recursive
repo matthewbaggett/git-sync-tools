@@ -1,0 +1,17 @@
+#!/bin/bash
+if [ -z "$1" ]; then
+        echo "Must pass a parameter with the repo you want to sync"
+        exit 1;
+fi;
+
+if [ ! -d $1 ]; then
+        echo "Path doesn't exist."
+        exit 1;
+fi;
+
+for repo in $1/*; do
+	echo $repo
+	if [ -d $repo ]; then
+		git-remote-sync $repo
+	fi
+done
